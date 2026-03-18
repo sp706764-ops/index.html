@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Invitation</title>
+  <style>
+
+    body {margin:0;  background:#fff; color:#333; font-family: 'Segoe UI', sans-serif; text-align: center; background-color: #f9f9f9; padding: 20px;}
+    header {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(pooja\ main\ photo.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+    header h1 {margin:0; font-size:4rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0, 5); color: #f1c40f; letter-spacing: 2px;}
+    header p {margin:0; font-size:3rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0, 5); color: #f1c40f; letter-spacing: 2px;}
+    nav {
+    color: blue;
+    position: fixed;    /* Isse navbar screen par "chipak" jayega */
+    top: 0;             /* Ekdam upar rahega */
+    left: 0;
+    width: 100%;        /* Puri width cover karega */
+    z-index: 1000;      /* Isse navbar baaki content ke "upar" dikhega, niche nahi dabega */
+    background-color: white; /* Scroll karte waqt text saaf dikhe isliye background zaroori hai */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Thoda shadow taaki look premium lage */
+}
+nav a {
+    text-decoration: none;
+    padding: 15px 20px; /* Menu items ke beech space */
+    color: #333;
+    font-weight: bold;
+    display: inline-block;
+}
+
+nav {
+    display: flex;
+    justify-content: center; /* Menu ko screen ke beech mein lane ke liye */
+    align-items: center;
+}
+
+/* Zaroori Tip: */
+body {
+    padding-top: 60px; /* Navbar fix karne ke baad content uske niche dab sakta hai, isliye body ko thoda niche dhaklein */
+}
+    section {padding:50px 20px; text-align:center;}
+    .gallery img, .family img {width:200px; height:auto; margin:10px; border-radius:10px;}
+    form input, form textarea, form button {
+      width:100%; max-width:400px; padding:12px; margin:10px auto;
+      display:block; border:1px solid #ccc; border-radius:5px;
+      }
+    form button {background:#e91e63; color:#fff; border:none; cursor:pointer;}
+    form button:hover {background:#c2185b;}
+    footer {background:#f8f8f8; padding:20px; text-align:center;}
+
+    .about-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.zigzag-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    flex-wrap: wrap; /* Mobile par automatic adjust hoga */
+}
+
+/* Jab row "reverse" ho (Bride ke liye) */
+.zigzag-row.reverse {
+    flex-direction: row-reverse;
+}
+
+.text-area {
+    flex: 1;
+    padding: 20px;
+    min-width: 300px;
+}
+
+.image-area {
+    flex: 1;
+    min-width: 300px;
+    
+}
+
+.image-area img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover; /* Photo stretch nahi hogi, ekdam sahi dikhegi */
+    border-radius: 8px;
+    object-position: top;
+}
+.gallery-section {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.gallery-section h2 {
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #333;
+}
+
+/* Grid Layout */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Auto adjust columns */
+    gap: 15px; /* Photos ke beech ki doori */
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gallery-item {
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    height: 300px; /* Sabhi photos ki height ek jaisi rahegi */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Photo stretch nahi hogi, box mein fix hogi */
+    transition: transform 0.5s ease; /* Zoom effect ke liye */
+    cursor: pointer;
+    object-fit: cover;
+    object-position: top;
+}
+
+/* Hover Effect: Mouse le jane par photo zoom hogi */
+.gallery-item img:hover {
+    transform: scale(1.1);
+}
+
+/* Mobile Friendly: Choti screen par 1 ya 2 column dikhenge */
+@media (max-width: 600px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+    }
+    .gallery-item {
+        height: 200px;
+    }
+}
+.tab-buttons {
+    margin-bottom: 30px;
+}
+
+.tab-btn {
+    padding: 10px 25px;
+    border: 2px solid #d4a373;
+    background: transparent;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 5px;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    background: #d4a373;
+    color: white;
+}
+
+/* By default grid chhupa ke rakho */
+.family-grid {
+    display: none; 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Jo grid active hai sirf wahi dikhegi */
+.family-grid.active-grid {
+    display: grid;
+}
+
+.family-card {
+    background: #fdfdfd;
+    padding: 15px;
+    border: 1px solid #eee;
+    text-align: center;
+}
+
+.family-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: top;
+}
+
+.event-item {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        background: #fffafa;
+    }
+.countdown {
+        font-weight: bold;
+        color: #e91e63;
+        font-size: 1.2rem;
+        margin-top: 5px;
+    }
+
+
+    /* --- Sabse niche paste karein --- */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.5rem !important; /* Mobile par heading choti dikhegi */
+    }
+    header p {
+        font-size: 1.5rem !important;
+    }
+    
+    nav {
+        flex-wrap: wrap; /* Menu items mobile par ek ke niche ek aa sakte hain */
+    }
+    
+    nav a {
+        padding: 10px 10px;
+        font-size: 12px;
+    }
+
+    .zigzag-row {
+        flex-direction: column !important; 
+    }
+
+    .zigzag-row.reverse {
+        flex-direction: column !important; /* Reverse row bhi seedhi ho jayegi */
+    }
+
+    .text-area, .image-area {
+        width: 100% !important;
+        padding: 10px;
+        min-width: unset;
+    }
+
+    .image-area img {
+        height: 300px; /* Mobile par image height thodi kam */
+    }
+}
+
+button { padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+    #noBtn {background-color: #f81212; color: white;
+    position: relative; /* Zaroori: taaki move ho sake */
+    left: 10%;         /* Shuruat mein Yes se door */
+    transition: 0.1s ease; 
+    z-index: 1;        /* Yes button ke niche rahega */
+    touch-action: none; /* Mobile par default click/scroll ko rokne ke liye */
+}
+
+#yesBtn {background-color: #2e0efa; color: white;
+    position: relative;
+    z-index: 10;       /* Ye hamesha top par dikhega */
+}
+
+/* Container jisme buttons hain */
+.button-area {
+    position: relative;
+    height: 300px;     /* Mobile par thoda bada area taaki button ko bhagne ki jagah mile */
+    width: 100%;
+    overflow: hidden;  /* Button screen ke bahar nahi jayega */
+}
+.btn-group { margin-top: 20px; display: flex; justify-content: center; gap: 20px; min-height: 50px; }
+
+.container { max-width: 400px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
+        
+h2 { color: #333; }
+        
+#rsvpForm { display: none; margin-top: 30px; text-align: left; }
+input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+.submit-btn { width: 100%; background-color: #25D366; color: white; font-size: 16px; margin-top: 10px; }
+
+
+.whatsapp-btn {
+    background-color: #25D366;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+  </style>
+</head>
+<body>
+
+<header>
+  <section id="page">
+    <h1>POOJA  ❤️ SITENDRA</h1>
+    <p>Wedding Invitation</p>
+    <p> 25 APRIL </p>
+  </section>
+</header>
+
+<nav>
+  <a href="#about">ABOUT</a>
+  <a href="#story">STORY</a>
+  <a href="#event">EVENT</a>
+  <a href="#gallery">GALLERY</a>
+  <a href="#page">POOJA  ❤️ SITENDRA</a>
+  <a href="#family">FAMILY</a>
+  <a href="#rsvp">RSVP</a>
+  <a href="#location">LOCATION</a>
+  <a href="#contact">CONTACT</a>
+  <a href="#createwebsite">CONTACT FOR CREATE WEBSITE</a>
+</nav>
+
+<section id="about" class="about-section">
+    <h2>About Us</h2>
+
+    <div class="zigzag-row">
+        <div class="text-area">
+            <h3>Groom: SITENDRA SEN</h3>
+            <p>"A talented hairdresser who brings a touch of creativity to every style. Hardworking, independent, and someone who lives life with elegance and charm."</p>
+        </div>
+        <div class="image-area">
+            <img src="IMG-20260318-WA0001.jpg" alt="Sitendra Photo">
+        </div>
+    </div>
+
+    <div class="zigzag-row reverse">
+        <div class="text-area">
+            <h3>Bride: POOJA SEN</h3>
+            <p>"A devoted medical professional whose compassion and dedication shine through her work. She blends intelligence with kindness, bringing both care and warmth to everyone she meets."</p>
+        </div>
+        <div class="image-area">
+            <img src="IMG-20260318-WA0015.jpg" alt="Pooja Photo">
+        </div>
+    </div>
+</section>
+
+<section id="story">
+  <h2>Our Story</h2>
+  <p>It all began with a smile... and now we are here, inviting you to celebrate our love.</p>
+  <p>"Har rishta upar wala banata hai, hum toh bas us raaste par mil gaye. Hamari mulakat ek naye safar ki shuruat thi. Aaj hum apne parivaar aur doston ki maujudgi mein ek dusre ke hone ja rahe hain. Hum chahte hain ki aap hamari is khushi ka hissa banein."</p>
+  <p>"Do dil, do raahein aur ek manzil. Humne kabhi nahi socha tha ki ek dusre se milna hamari zindagi badal dega. Baaton se dosti hui aur dosti se pyaar ka ye safar ab shaadi ke bandhan tak pahunch gaya hai. Hamari kahani ab hamare saath aap sab ki duaon se poori hogi."</p>
+  <p>Humein badhai dene ke liye ya koi sawal puchne ke liye yahan click karein:</p>
+<a href="https://wa.me/919201087860?text=Congratulations!%20Aapki%20website%20bahut%20achhi%20hai." 
+   style="background-color: #25D366; color: white; padding: 10px; text-decoration: none; border-radius: 5px;">
+   Send Blessings on WhatsApp
+</a>
+</section>
+
+<div id="event" class="wedding-schedule">
+    <h2>Mangal Utsav Schedule</h2>
+
+    <div class="event-item">
+        <h3>Tilak Ceremony</h3>
+        <p>21 April 2026 | Subah 10:00 AM</p>
+        <div class="countdown" data-date="April 21, 2026 10:00:00"></div>
+    </div>
+
+    <div class="event-item">
+        <h3>Magar Mati</h3>
+        <p>22 April 2026 | Subah 10:00 AM</p>
+        <div class="countdown" data-date="April 22, 2026 10:00:00"></div>
+    </div>
+
+    <div class="event-item">
+        <h3>Mandap & Haldi</h3>
+        <p>23 April 2026 | Subah 10:00 AM</p>
+        <div class="countdown" data-date="April 23, 2026 10:00:00"></div>
+    </div>
+
+    <div class="event-item">
+        <h3>Mehndi Raat</h3>
+        <p>23 April 2026 | Raat 08:00 PM</p>
+        <div class="countdown" data-date="April 23, 2026 20:00:00"></div>
+    </div>
+
+    <div class="event-item">
+        <h3>Barat Arrival</h3>
+        <p>25 APRIL 2026 | Shaam 06:00 PM</p>
+        <div class="countdown" data-date="April 25, 2026 18:00:00"></div>
+    </div>
+</div>
+
+<section id="gallery" class="gallery-section">
+    <h2>Our Special Moments</h2>
+    <div class="gallery-grid">
+        <div class="gallery-item">
+            <img src="IMG-20260318-WA0001.jpg" alt="Wedding Photo 1">
+        </div>
+        <div class="gallery-item">
+            <img src="IMG-20260318-WA0034.jpg" alt="Wedding Photo 2">
+        </div>
+        <div class="gallery-item">
+            <img src="IMG-20260318-WA0024.jpg" alt="Wedding Photo 3">
+        </div>
+        <div class="gallery-item">
+            <img src="IMG-20260318-WA0026.jpg" alt="Wedding Photo 4">
+        </div>
+        <div class="gallery-item">
+            <img src="IMG-20260318-WA0027.jpg" alt="Wedding Photo 5">
+        </div>
+        <div class="gallery-item">
+            <img src="IMG-20260318-WA0028.jpg" alt="Wedding Photo 6">
+        </div>
+         <div class="gallery-item">
+            <img src="IMG-20260318-WA0029.jpg" alt="Wedding Photo 1">
+        </div>
+         <div class="gallery-item">
+            <img src="IMG-20260318-WA0030.jpg" alt="Wedding Photo 1">
+        </div>
+    </div>
+</section>
+
+<section id="family" class="family-section">
+    <div class="family-header">
+        <h2>Family</h2>
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showFamily('bride')">Bridesmaid</button>
+            <button class="tab-btn" onclick="showFamily('groom')">Groomsmen</button>
+        </div>
+    </div>
+
+    <div id="bride-family" class="family-grid active-grid">
+        <div class="family-card">
+            <img src="father ji.jpg" alt="Father">
+            <h3>mr. Rambhagat sen</h3>
+            <p>Father of bride</p>
+        </div>
+        <div class="family-card">
+            <img src="mummy.jpg" alt="Ajay">
+            <h3>mrs. Kamlesh sen</h3>
+            <p>Mother of bride</p>
+        </div>
+         <div class="family-card">
+            <img src="neeraj & wife.jpg" alt="Father">
+            <h3>mr. Neeraj sen & mrs. Pinki sen</h3>
+            <p>Brother & sister-in-law of bride</p>
+        </div>
+         <div class="family-card">
+            <img src="sanjay sen .jpg" alt="Father">
+            <h3>mr. Sanjay sen </h3>
+            <p>Brother of bride</p>
+        </div>
+         <div class="family-card">
+            <img src="poonam & husband.jpg" alt="Father">
+            <h3>mrs. Poonam sen & mr. Rampratap sen</h3>
+            <p>Elder sister & brother-in-law </p>
+        </div>
+         <div class="family-card">
+            <img src="anshika sen.jpg" alt="Father">
+            <h3>Anshika sen</h3>
+            <p>Nephew of bride</p>
+        </div>
+         <div class="family-card">
+            <img src="harshita sen .jpg" alt="Father">
+            <h3>Harshita sen </h3>
+            <p>Nephew of bride</p>
+        </div>
+        <div class="family-card">
+            <img src="neeti sen.jpg" alt="Father">
+            <h3>Neeti sen </h3>
+            <p>Nephew of bride</p>
+        </div>
+    </div>
+
+    <div id="groom-family" class="family-grid">
+        <div class="family-card">
+            <img src="groom father ji.jpg" alt="Mother">
+            <h3>mr. Ramkisan Sen</h3>
+            <p>Father of Groom</p>
+        </div>
+        <div class="family-card">
+            <img src="groom mother ji.jpg" alt="Father">
+            <h3>mrs. sitendra ki mummy </h3>
+            <p>Mother of Groom</p>
+        </div>
+        <div class="family-card">
+            <img src="sailendra and ruchi.jpg" alt="Father">
+            <h3>mr. Sailendra sen & mrs. Ruchi Sen </h3>
+            <p>Brother & Sister-in-law of Groom </p>
+        </div>
+        <div class="family-card">
+            <img src="satish .jpg" alt="Father">
+            <h3>mr. Satish sen </h3>
+            <p>Mother of Groom</p>
+        </div>
+    </div>
+</section>
+
+
+    
+
+
+<section id="rsvp">
+    <div class="container">
+    <h2>Kya Aap Aa Rahe Hain?</h2>
+    <p> Niche diy gye button pr click kre  aur hme wattshapp per btayae</p>
+    
+    <div class="btn-group">
+        <button id="yesBtn" onclick="showForm()">Haan (Yes)</button>
+        <button id="noBtn" onmouseover="moveNoButton()">Nahi (No)</button>
+    </div>
+    
+
+
+
+
+    <div id="rsvpForm">
+        <input type="text" id="name" placeholder="Aapka Naam" required>
+        <input type="number" id="number" placeholder="Contact Number" required>
+        <input type="number" id="guests" placeholder="Kitne log aayenge?" required>
+        <input type="text" id="city" placeholder="Kis shehar se aa rahe hain?" required>
+        
+        <button class="submit-btn" onclick="sendToWhatsApp()">Send RSVP via WhatsApp</button>
+    </div>
+</div>
+</section>
+
+
+
+
+
+
+ <section id="location">
+        <div class="card">
+            <h2>Kahan  par h shadi?</h2>
+            <p><strong>Date:</strong>  25 april, 2026</p>
+            <p><strong>Venue:</strong> Anand palace and marriage garden Uma resort ke aage karhi road satna MP, Uma resort ke aage, Anand palace, karhi road, Pateri, Satna, Madhya Pradesh 485001</p>
+            <a href="https://www.google.com/maps/dir//Anand+palace+and+marriage+garden+Uma+resort+ke+aage+karhi+road+satna+MP,+Uma+resort+ke+aage,+Anand+palace,+karhi+road,+Pateri,+Satna,+Madhya+Pradesh+485001/@23.2651525,77.4128187,2771m/data=!3m1!1e3!4m8!4m7!1m0!1m5!1m1!1s0x3983812c9cab677d:0xc51a71e3e50e9ffc!2m2!1d80.8002742!2d24.5805972?entry=ttu&g_ep=EgoyMDI2MDMxNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn location-btn">📍 Google Maps Location</a>
+        </div>
+    </section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <p>For queries, call: +91 9201087860, +91 9826609636</p>
+</section>
+<section id="createwebsite">
+<p>Radhe Radhe  Myself is Ajay aisi hi website bnwane k liy niche diy gye click  button pr click kre </p>
+<a href="https://wa.me/919753561677" target="_blank">
+  click 
+</a>
+
+<p> wattshapp k liy </p>
+
+<a href="https://wa.me/919753561677" class="whatsapp-btn">
+   WhatsApp par sampark karein aur btaiye ki app hmse kaisi website bnwana chahte h 
+</a>
+</section>
+
+<footer>
+  <h1> Thank You </h1>
+  <p>© 25 April 2026 Pooja  & Sitendra  Wedding</p>
+  <p> CREATED BY AJAY </p>
+</footer>
+
+<script>
+  document.getElementById("rsvpForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let name = document.getElementById("name").value;
+    let contact = document.getElementById("contact").value;
+    let guests = document.getElementById("guests").value;
+    let from = document.getElementById("from").value;
+
+    let whatsappNumber = "+91 9201087860"; // apna WhatsApp number daaliye
+    let message = `Hello, I am ${name}. My contact: ${contact}. Guests: ${guests}. Coming from: ${from}.`;
+
+    let url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  });
+
+
+function showFamily(type) {
+    // Pehle saari grids chhupa do
+    document.getElementById('groom-family').classList.remove('active-grid');
+    document.getElementById('bride-family').classList.remove('active-grid');
+
+    // Saare buttons se 'active' class hata do
+    let buttons = document.getElementsByClassName('tab-btn');
+    for (let btn of buttons) {
+        btn.classList.remove('active');
+    }
+
+    // Ab jo click kiya hai sirf usko dikhao
+    if (type === 'groom') {
+        document.getElementById('groom-family').classList.add('active-grid');
+        event.currentTarget.classList.add('active');
+    } else {
+        document.getElementById('bride-family').classList.add('active-grid');
+        event.currentTarget.classList.add('active');
+    }
+}
+
+
+
+    function updateWeddingTimers() {
+        const countdowns = document.querySelectorAll('.countdown');
+        
+        countdowns.forEach(display => {
+            const target = new Date(display.getAttribute('data-date')).getTime();
+            const now = new Date().getTime();
+            const gap = target - now;
+
+            if (gap < 0) {
+                display.innerHTML = "<b>Event has started!</b>";
+                return;
+            }
+
+            const d = Math.floor(gap / (1000 * 60 * 60 * 24));
+            const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((gap % (1000 * 60)) / 1000);
+
+            display.innerHTML = `${d}d : ${h}h : ${m}m : ${s}s left`;
+        });
+    }
+
+    // Har 1 second mein update karega
+    setInterval(updateWeddingTimers, 1000);
+    updateWeddingTimers(); 
+
+ // "No" button ko bhagane wala function
+    function moveNoButton() {
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 100);
+        const noBtn = document.getElementById('noBtn');
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+    }
+
+    // "Yes" click karne par form dikhane wala function
+    function showForm() {
+        document.getElementById('rsvpForm').style.display = 'block';
+        document.getElementById('noBtn').style.display = 'none'; // No button gayab kar do
+        alert("Khushi hui sunkar! Kripya details bharein.");
+    }
+
+    // WhatsApp par message bhejne wala function
+    function sendToWhatsApp() {
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('number').value;
+        const guests = document.getElementById('guests').value;
+        const city = document.getElementById('city').value;
+        
+        if(!name || !guests) { alert("Sari details bharein!"); return; }
+
+        const message = `Namaste! Main RSVP confirm karna chahta hoon:%0A%0A*Naam:* ${name}%0A*Phone:* ${phone}%0A*Guests:* ${guests}%0A*City:* ${city}%0A%0AMain zaroor aaunga!`;
+        
+        // Yahan apna WhatsApp number dalein (bina + ke)
+        const whatsappURL = `https://wa.me/919201087860?text=${message}`;
+        window.open(whatsappURL, '_blank');
+    }
+
+    // Dono events handle karne ke liye ek hi function
+const noBtn = document.getElementById('noBtn');
+
+// Desktop ke liye (Mouse)
+noBtn.addEventListener('mouseover', moveButton);
+
+// Mobile ke liye (Touch/Click)
+noBtn.addEventListener('click', moveButton);
+noBtn.addEventListener('touchstart', function(e) {
+    e.preventDefault(); // Click hone se pehle hi move kar do
+    moveButton();
+});
+</script>
+
+</body>
+</html>

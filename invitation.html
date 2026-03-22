@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation Card</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+        
+    </script>
+
+</head>
+<style>
+
+  body {
+    background-color: #fdf5e6;
+    display: flex;
+    justify-content: center; /* Center karne ke liye */
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Sticky Header Styling */
+    .sticky-shlok-header {
+        position: fixed; /* Screen par chipka rahega */
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(135deg, #712111 0%, #a52a2a 100%); /* Deep Red/Maroon */
+        color: #f3d1b9; /* Gold/Cream Text */
+        padding: 10px 0;
+        text-align: center;
+        z-index: 10000; /* Sabse upar dikhne ke liye */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        border-bottom: 2px solid #df9e76; /* Gold Border */
+        font-family: 'Tiro Devanagari Hindi', serif;
+    }
+
+    .shlok-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .om-top {
+        font-size: 35px;
+        font-weight: bold;
+        color: #f3d1b9;
+        text-shadow: 0 0 10px rgba(243, 209, 185, 0.5);
+    }
+
+    .shlok-lines {
+        font-size: 16px; /* Mobile ke liye perfect size */
+        line-height: 1.4;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    /* Computer/Badi screen ke liye font thoda bada */
+    @media (min-width: 768px) {
+        .shlok-lines {
+            font-size: 20px;
+        }
+        .om-top {
+            font-size: 45px;
+        }
+    }
+
+    /* ZAROORI: Isse neeche ka content (RSVP/Invitation) Header ke peeche nahi chhupega */
+    body {
+        padding-top: 80px; /* Header ki height ke hisaab se space */
+    }
+
+    @media (max-width: 480px) {
+        body {
+            padding-top: 100px; /* Mobile par thoda zyada space */
+        }
+    }
+
+
+
+
+
+.scroll-container { width: 90%; max-width: 500px; padding: 40px 0; }
+.welcome-guest { margin-bottom: 30px; text-align: center; }
+
+.ceremony-card {
+    background: white; margin-bottom: 20px; padding: 25px;
+    border-radius: 60px 0px 60px 0px; border-left: 5px solid #a45a3d;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.ceremony-card h3 { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+.ceremony-card p { font-size: 0.95rem; margin: 5px 0; }
+.wedding-main { background: #a45a3d; color: white; }
+.wedding-main h3 { border-bottom: 1px solid rgba(255,255,255,0.3);}
+
+.back-btn { margin-top: 20px; background: none; border: 1px solid #a45a3d; color: #a45a3d; padding: 10px 30px; border-radius: 20px; cursor: pointer; }
+
+
+ /* Footer Style */
+    .invitation-footer {
+        width: 100%;
+        background: linear-gradient(to bottom, transparent, rgba(113, 33, 17, 0.1));
+        text-align: center;
+        color: #712111; /* Ghera laal/bhura color jo card par hai */
+        box-sizing: border-box;
+        margin-top: 10px;
+    }
+
+    .invitation-text {
+        font-family: 'Tiro Devanagari Hindi', serif;
+        font-size: clamp(18px, 4vw, 24px); /* Mobile par bhi sahi dikhega */
+        line-height: 1.8;
+        font-weight: 600;
+        font-style: italic;
+    }
+
+    .invitation-text p {
+        margin: 10px 0;
+    }
+
+    /* Pehli line 'निमंत्रण' ko thoda alag dikhane ke liye */
+    .invitation-text p:first-child {
+        font-size: 28px;
+        letter-spacing: 2px;
+        font-weight: bold;
+        color: #b32e15;
+    }
+
+    /* Sundar Phool wala Icon */
+    .decorative-icon {
+        font-size: 30px;
+        color: #b32e15;
+        margin: 15px 0;
+        opacity: 0.8;
+    }
+
+    /* Halka sa animation jab user scroll karke niche aaye */
+    .invitation-footer {
+        animation: fadeInUp 2s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+
+<body>
+<div class="sticky-shlok-header">
+    <div class="shlok-content">
+        <span class="om-top">ॐ</span>
+        <div class="shlok-lines">
+            ।। श्री गणेशाय नमः ।।<br>
+            वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ: । निर्विघ्नं कुरुमेदेव सर्वकार्येषु सर्वदा ।।
+        </div>
+    </div>
+</div>
+
+
+    
+
+
+
+<div id="invitation-details" class="screen" >
+        <div class="scroll-container">
+            <h2 class="welcome-guest">Welcome, <span id="displayName"></span> ! Hmari shadi me apka swagat hai , hmari shadi me jarur aaiyega. </h2>
+            
+            <div class="ceremony-card">
+                <h3> मण्डपाच्छादन </h3>
+                <p class="date">📅  23 अप्रैल 2026</p>
+                <p class="time">⏰ 10:00 AM onwards</p>
+                <p class="venue">📍 नीरज सेन, गली नं. 8, राजेन्द्र नगर, सतना (म.प्र.)</p>
+            </div>
+
+            <div class="ceremony-card">
+                <h3> मातृकापूजन </h3>
+                <p class="date">📅  24 अप्रैल 2026</p>
+                <p class="time">⏰ 10:00 AM onwards</p>
+                <p class="venue">📍  नीरज सेन, गली नं. 8, राजेन्द्र नगर, सतना (म.प्र.)</p>
+            </div>
+
+            <div class="ceremony-card">
+                <h3>बारात एवं पाणिग्रहण </h3>
+                <p class="date">📅  25 अप्रैल 2026</p>
+                <p class="time">⏰ 07:00 PM onwards</p>
+                <p class="venue">📍 Anand palace, uttari Pateri, karhi road, Satna M.P.</p>
+            </div>
+
+            <div class="ceremony-card">
+                <h3>विदाई</h3>
+                <p class="date">📅 26 अप्रैल 2026</p>
+                <p class="time">⏰ 10:00 AM</p>
+                <p class="venue">📍 Anand palace, uttari Pateri, karhi road, Satna M.P.</p>
+            </div>
+
+            <div class="ceremony-card wedding-main">
+                <h3>।। शुभ विवाह एवं प्रीतिभोज ।।</h3>
+                <p class="date">📅 25 अप्रैल 2026</p>
+                <p class="time">⏰ 07:00 PM</p>
+                <p class="venue">📍आनन्द पैलेस ,उत्तरी पतेरी, करही रोड, सतना म.प्र. </p>
+            </div>
+                 <button onclick="window.location.href='newindex.html'" class="back-btn">Exit</button>
+
+                 <button id="downloadPdfBtn" onclick="generateWeddingPDF()" class="back-btn" style="background: #800000; color: white; border: none; margin-bottom: 10px; width: 100%;">
+    Download Full Invitation (PDF) 📄
+</button>
+
+<div id="personalizedCard" style="position: absolute; left: -9999px; width: 595px; height: 842px; background: #fffdf5; padding: 50px; box-sizing: border-box; border: 15px double #800000; color: #800000; font-family: 'serif'; text-align: center;">
+    <div style="font-size: 30px; margin-bottom: 10px;">ॐ श्री गणेशाय नमः</div>
+    <h1 style="font-size: 50px; margin: 20px 0; color: #b32e15;">निमंत्रण</h1>
+    <div style="font-size: 24px; margin-bottom: 30px;">प्रिय, <strong id="pdfGuestName" style="text-decoration: underline;">Guest</strong></div>
+    
+    <p style="font-size: 20px; line-height: 1.6;">
+        भेज रहा हूँ स्नेह निमंत्रण प्रियवर तुम्हें बुलाने को।<br>
+        हे मानस के हंसराज तुम भूल न जाना आने को।।
+    </p>
+
+    <div style="background: rgba(128, 0, 0, 0.05); padding: 25px; border-radius: 15px; margin: 40px 0; text-align: left; border: 1px dashed #800000;">
+        <h3 style="text-align: center; border-bottom: 1px solid #800000; padding-bottom: 10px;">कार्यक्रम विवरण</h3>
+        <p><strong>मण्डपाच्छादन:</strong> 23 अप्रैल 2026</p>
+        <p><strong>मातृकापूजन:</strong> 24 अप्रैल 2026</p>
+        <p><strong>शुभ विवाह:</strong> 25 अप्रैल 2026 (शाम 07:00 बजे से)</p>
+        <p><strong>स्थान:</strong> आनन्द पैलेस, उत्तरी पतेरी, सतna (म.प्र.)</p>
+    </div>
+
+    <p style="font-size: 18px; margin-top: 50px;">
+        दर्शनाभिलाषी: <br>
+        <strong>समस्त सेन परिवार</strong>
+    </p>
+</div>
+
+<canvas id="tempCanvas" style="display:none;"></canvas>
+
+
+
+
+        </div>
+    </div>
+<section id="last-line"> 
+<div class="invitation-footer">
+    <div class="decorative-icon">❦</div>
+    <div class="invitation-text">
+        <p>।। निमंत्रण ।।</p>
+        <p>भेज रहा हूँ स्नेह निमंत्रण प्रियवर तुम्हें बुलाने को ।</p>
+        <p>हे मानस के हंसराज तुम भूल न जाना आने को ।।</p>
+    </div>
+    <div class="decorative-icon">❦</div>
+</div>
+</section>
+</body>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const guestName = params.get('name');
+    if (guestName) {
+        document.getElementById("displayName").innerText = guestName;
+    }
+
+
+     async function generateWeddingPDF() {
+    const { jsPDF } = window.jspdf;
+    const btn = document.getElementById('downloadPdfBtn');
+    const guestName = document.getElementById("displayName").innerText || "अतिथि";
+    
+    // Guest ka naam update karein
+    document.getElementById("pdfGuestName").innerText = guestName;
+    
+    btn.innerText = "PDF Taiyar ho rahi hai...";
+    btn.disabled = true;
+
+    try {
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        // --- PAGE 1: Personalized Details ---
+        const personalCardDiv = document.getElementById('personalizedCard');
+        const canvas = await html2canvas(personalCardDiv, { 
+            scale: 2,
+            useCORS: true,
+            logging: false
+        });
+        const page1Img = canvas.toDataURL('image/png');
+        pdf.addImage(page1Img, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+        // --- PAGE 2: Red Invitation Photo ---
+        pdf.addPage();
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = 'card.jpg'; // Aapki photo ka sahi naam
+
+        await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = () => reject("Image 'card.jpg' nahi mili!");
+        });
+
+        const imgProps = pdf.getImageProperties(img);
+        const imgRatio = (imgProps.height * pdfWidth) / imgProps.width;
+        
+        // Image ko page ke beech mein set karne ke liye
+        const yPos = (pdfHeight - imgRatio) / 2; 
+        pdf.addImage(img, 'JPEG', 0, yPos > 0 ? yPos : 0, pdfWidth, imgRatio);
+
+        // --- Save ---
+        pdf.save(`Wedding_Invitation_${guestName}.pdf`);
+
+    } catch (error) {
+        console.error(error);
+        alert("Galti: " + error);
+    } finally {
+        btn.innerText = "Download Full Invitation (PDF) 📄";
+        btn.disabled = false;
+    }
+}
+</script>
+
+</html>
